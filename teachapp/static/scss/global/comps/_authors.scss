@@ -1,0 +1,42 @@
+.author {
+    &-list {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        li {
+        	padding: 0 0.25rem;
+        	&:first-child {
+                @if($rtl==false){
+                    margin-left: 0.75rem;
+                }
+                @if($rtl==true){
+                    margin-right: 0.75rem;
+                }
+            }
+        }
+        &.is-grouped {
+	        li {
+	        	padding: 0;
+	            &:not(:last-child) {
+                    @if($rtl==false){
+                        margin-left: -1rem;
+                    }
+                    @if($rtl==true){
+                        margin-right: -1rem;
+                    }
+	            }
+	            &:first-child {
+                    @if($rtl==false){
+                        margin-left: 0.75rem;
+                    }
+                    @if($rtl==true){
+                        margin-right: 0.75rem;
+                    }
+	            }
+	        }
+        	.user-avatar {
+                border: 2px solid $white;
+            }
+        }
+    }
+}
