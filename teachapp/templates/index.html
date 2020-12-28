@@ -1,18 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" class="js">
 
-<head>    
+<head>
     {% load static %}
-    <meta charset="utf-8">
-    <meta name="author" content="Softnio">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">    
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
-    <title>{{ Title }} - Teachable Machine</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'assets/css/dashlite.css' %}">
-    <link id="skin-default" rel="stylesheet" href="{% static 'assets/css/theme.css' %}">
-    <script src="{% static 'assets/js/bundle.js' %}"></script>
+    {% include 'assets.html' %}
 </head>
 
 <body class="nk-body bg-white npc-default has-aside ">
@@ -20,7 +11,7 @@
         <div class="nk-main ">
             <div class="nk-wrap ">
                 {% include 'header.html' %}
-                <div class="nk-content ">
+                <div class="nk-content">
                     <div class="container wide-xl">
                         <div class="nk-content-inner">
                             {% include 'menu.html' %}
@@ -39,28 +30,49 @@
                                     <div class="nk-block">
                                         <div class="row g-gs">
                                             <div class="col-sm-6">
-                                                <div class="card card-bordered">
-                                                    <div class="card-inner">
-                                                        <div class="card-title-group align-start mb-2">
-                                                            <div class="card-title">
-                                                                <h6 class="title">Define Your Class</h6>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" >
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <input placeholder="Name Class" type="text" class="form-control">
+                                                <div class="class-container">
+
+                                                    <div class="card card-bordered card-class" id="class-1">
+                                                        <div class="card-inner">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <input placeholder="Name Class" type="text"
+                                                                            class="form-control input-class-name"
+                                                                            id="input-class-1" value="Class 1">
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-12 mt-2">
-                                                                <div class="form-group">
-                                                                    <button class="btn btn-info"><i class="fas fa-camera mr-2"></i> Webcam</button>
-                                                                    <button class="btn btn-info"><i class="fas fa-upload mr-2"></i> Upload Image</button>
+                                                                <div class="col-md-12 mt-2">
+                                                                    <div class="form-group" id="class-1-input-button">
+                                                                        <button class="btn btn-info input-webcam"
+                                                                            onclick="openmodalrecord(this)"
+                                                                            data-input-name="#input-class-1"
+                                                                            data-class="#class-1"><i
+                                                                                class="fas fa-camera mr-2"></i>
+                                                                            Webcam</button>
+                                                                        <button class="btn btn-info input-upload"
+                                                                            data-input-name="#input-class-1"
+                                                                            data-class="#class-1"><i
+                                                                                class="fas fa-upload mr-2"></i> 
+                                                                            Upload Image</button>
+                                                                    </div>
+                                                                    <div class="row" id="class-1-result-preview">
+                                                                        <button class="btn btn-danger mb-2">Delete</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                 </div>
+
+                                                <div class="row mt-4">
+                                                    <div class="col-md-12">
+                                                        <button class="add-class btn btn-light"><i
+                                                                class="fas fa-plus mr-2"></i> Add Class</button>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -70,15 +82,172 @@
                         </div>
                     </div>
                 </div>
-                <!-- content @e -->
+
             </div>
-            <!-- wrap @e -->
+
         </div>
-        <!-- main @e -->
+
+        <div class="modal fade modal-webcam" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Record Your Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="video-container text-center"
+                        style="background-image: url(https://png.pngtree.com/png-vector/20190307/ourlarge/pngtree-webcam-icon-design-template-vector-isolated-png-image_779652.jpg);
+                        background-size: cover;
+                        background-repeat: no-repeat;">
+                            <div class="col-md-12">
+                                <div class="alert alert-info mb-3">
+                                    Record Times <span class="timer">20</span> Seconds
+                                </div>
+                            </div>
+                            <video id="webcam-container" width="640" height="480" autoplay></video>
+                           <div class="col-md-12 w-100 text-center" style="margin-top: -20px;">
+                                <button class="record-btn btn btn-success">Record</button>
+                                <button class="stop-btn btn btn-danger">Stop</button>
+                            </div>
+                            <canvas id="canvas-capturer" hidden width="320" height="240"></canvas>
+                        </div>
+                        <div class="result-container row p-3" style="height: 480px; overflow-y: scroll;" >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- app-root @e -->
-    <!-- JavaScript -->
     <script src="{% static 'assets/js/scripts.js' %}"></script>
+
+    <script>
+        $(".stop-btn").hide();
+        $(".result-container").hide();
+        var webcam = document.getElementById('webcam-container');
+        window.stream = "";
+        window.snappedimage = {};
+        window.listclass = {1:"#class-1", 2:"#class-2"}
+        window.activeclass = "";
+        window.timefps = 40; //25fps
+        window.limitfps = 20000;
+        window.isrecord = false;
+        window.capturer = document.getElementById('canvas-capturer');
+        window.snapping = null ; //for setinterval snapping image webcam
+
+        function turnonwebcam() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({
+                    video: true
+                }).then(function (stream) {
+                    webcam.srcObject = stream;
+                    window.stream = stream;
+                    webcam.play();
+                });
+            } else if (navigator.getUserMedia) { // Standard
+                navigator.getUserMedia({
+                    video: true
+                }, function (stream) {
+                    webcam.src = stream;
+                    window.stream = stream;
+                    webcam.play();
+                }, errBack);
+            } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+                navigator.webkitGetUserMedia({
+                    video: true
+                }, function (stream) {
+                    webcam.src = window.webkitURL.createObjectURL(stream);
+                    window.stream = stream;
+                    webcam.play();
+                }, errBack);
+            } else if (navigator.mozGetUserMedia) { // Mozilla-prefixed
+                navigator.mozGetUserMedia({
+                    video: true
+                }, function (stream) {
+                    webcam.srcObject = stream;
+                    window.stream = stream;
+                    webcam.play();
+                }, errBack);
+            } else {
+                Swal.fire("error", "Doesnt Support Webcam", "error")
+            }
+        }
+
+        function turnoffwebcam() {
+            webcam.pause();
+            webcam.src = "";
+            window.stream.getTracks()[0].stop();
+            console.log("Vid off");
+        }
+
+
+        function openmodalrecord(e){
+            $('.modal-webcam').modal('show');
+            turnonwebcam();
+            //assign active class
+            window.activeclass = $(e).attr("data-class")
+        }
+
+        $('.modal-webcam').on('hidden.bs.modal', function () {
+            turnoffwebcam()
+        })
+
+        function snap(){
+            var context = capturer.getContext('2d');
+            context.drawImage(webcam, 0, 0, 320, 240);
+            snappedimage[activeclass].push(capturer.toDataURL())
+        }
+
+        function renderimagepreview(){
+            turnoffwebcam();
+            $(".result-container").append(
+                '<div class="col-md-12 mb-2"><button class="btn btn-info" onclick="rerecording()">Record Again ? </button></div>'
+            )
+            $(".result-container").show();
+            $(".video-container").hide();
+            snappedimage[activeclass].forEach(element => {
+                $(".result-container").append(
+                    '<div class="col-3 p-1"><img src="'+element+'" style="width:100%"></div>'
+                )
+            });
+            $(activeclass+"input-button").hide();
+            $(activeclass+"input-button").hide();
+        }
+
+        $('.record-btn').click(function(){
+            $(".stop-btn").show();
+            $(this).hide();
+            window.isrecord = true;
+            //snap image
+            $(".timer").text((window.limitfps/1000).toString())
+            var timeleft = window.limitfps
+            snappedimage[activeclass] = []
+            window.snapping = setInterval(function(){ 
+                snap();
+                timeleft -= window.timefps
+                $(".timer").text((timeleft/1000).toFixed(2))
+                if (timeleft <= 0){
+                    window.isrecord = false;
+                    clearInterval(snapping)
+                    renderimagepreview();
+                }
+             }, window.timefps);
+        })
+
+        
+        $('.stop-btn').click(function(){
+            $(".record-btn").show();
+            $(this).hide();
+            window.isrecord = false;
+            clearInterval(snapping)
+            renderimagepreview();
+        })
+
+    </script>
 </body>
 
 </html>

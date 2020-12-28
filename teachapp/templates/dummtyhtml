@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="js">
 
-<head>    
+
+<head>
     {% load static %}
-    <meta charset="utf-8">
-    <meta name="author" content="Softnio">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">    
-    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
-    <title>{{ Title }} - Teachable Machine</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'assets/css/dashlite.css' %}">
-    <link id="skin-default" rel="stylesheet" href="{% static 'assets/css/theme.css' %}">
-    <script src="{% static 'assets/js/bundle.js' %}"></script>
+    {% include 'assets.html' %}
 </head>
+
 
 <body class="nk-body bg-white npc-default has-aside ">
     <div class="nk-app-root">
