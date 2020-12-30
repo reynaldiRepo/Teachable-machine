@@ -39,25 +39,26 @@
                                                                     <div class="form-group">
                                                                         <input placeholder="Name Class" type="text"
                                                                             class="form-control input-class-name"
-                                                                            id="input-class-1" value="Class 1">
+                                                                            id="class-1-input-name" value="Class 1">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12 mt-2">
                                                                     <div class="form-group" id="class-1-input-button">
                                                                         <button class="btn btn-info input-webcam"
                                                                             onclick="openmodalrecord(this)"
-                                                                            data-input-name="#input-class-1"
+                                                                            data-input-name="#class-1-input-name"
                                                                             data-class="#class-1"><i
                                                                                 class="fas fa-camera mr-2"></i>
                                                                             Webcam</button>
                                                                         <button class="btn btn-info input-upload"
-                                                                            data-input-name="#input-class-1"
+                                                                            data-input-name="#class-1-input-name"
                                                                             data-class="#class-1"><i
-                                                                                class="fas fa-upload mr-2"></i> 
+                                                                                class="fas fa-upload mr-2"></i>
                                                                             Upload Image</button>
                                                                     </div>
-                                                                    <div class="row" id="class-1-result-preview">
-                                                                        <button class="btn btn-danger mb-2">Delete</button>
+                                                                    <div class="row p-3 result-preview preview-on-input"
+                                                                        id="class-1-result-preview">
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -97,8 +98,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="video-container text-center"
-                        style="background-image: url(https://png.pngtree.com/png-vector/20190307/ourlarge/pngtree-webcam-icon-design-template-vector-isolated-png-image_779652.jpg);
+                        <div class="video-container text-center" style="background-image: url(https://png.pngtree.com/png-vector/20190307/ourlarge/pngtree-webcam-icon-design-template-vector-isolated-png-image_779652.jpg);
                         background-size: cover;
                         background-repeat: no-repeat;">
                             <div class="col-md-12">
@@ -107,13 +107,13 @@
                                 </div>
                             </div>
                             <video id="webcam-container" width="640" height="480" autoplay></video>
-                           <div class="col-md-12 w-100 text-center" style="margin-top: -20px;">
+                            <div class="col-md-12 w-100 text-center" style="margin-top: -20px;">
                                 <button class="record-btn btn btn-success">Record</button>
                                 <button class="stop-btn btn btn-danger">Stop</button>
                             </div>
                             <canvas id="canvas-capturer" hidden width="320" height="240"></canvas>
                         </div>
-                        <div class="result-container row p-3" style="height: 480px; overflow-y: scroll;" >
+                        <div class="result-container row p-3" style="height: 480px; overflow-y: scroll;">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -128,16 +128,20 @@
     <script>
         $(".stop-btn").hide();
         $(".result-container").hide();
+        $(".result-preview").hide();
         var webcam = document.getElementById('webcam-container');
         window.stream = "";
         window.snappedimage = {};
-        window.listclass = {1:"#class-1", 2:"#class-2"}
+        window.listclass = {
+            1: "#class-1",
+            2: "#class-2"
+        }
         window.activeclass = "";
         window.timefps = 40; //25fps
         window.limitfps = 20000;
         window.isrecord = false;
         window.capturer = document.getElementById('canvas-capturer');
-        window.snapping = null ; //for setinterval snapping image webcam
+        window.snapping = null; //for setinterval snapping image webcam
 
         function turnonwebcam() {
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -185,68 +189,110 @@
         }
 
 
-        function openmodalrecord(e){
+        function openmodalrecord(e) {
+            if ($("#class-1-input-name").val() == "") {
+                Swal.fire("warning", "Insert Class Name", "warning");
+                return;
+            }
+            if (window.isrecord == false){
+                $(".timer").text((window.limitfps / 1000).toFixed(0));
+            }
             $('.modal-webcam').modal('show');
             turnonwebcam();
-            //assign active class
             window.activeclass = $(e).attr("data-class")
         }
 
         $('.modal-webcam').on('hidden.bs.modal', function () {
             turnoffwebcam()
+            if (window.isrecord == true){
+                window.isrecord = false
+                clearInterval(snapping)
+                renderimagepreview();
+            }
+            $(".result-container").html('');
+            $(".result-container").hide();
+            $(".video-container").show();
+            $('.record-btn').show();
+            $(".stop-btn").hide();
         })
 
-        function snap(){
+        function snap() {
             var context = capturer.getContext('2d');
             context.drawImage(webcam, 0, 0, 320, 240);
             snappedimage[activeclass].push(capturer.toDataURL())
         }
 
-        function renderimagepreview(){
+        function renderimagepreview() {
             turnoffwebcam();
             $(".result-container").append(
                 '<div class="col-md-12 mb-2"><button class="btn btn-info" onclick="rerecording()">Record Again ? </button></div>'
             )
+            $(activeclass + "-result-preview").html(
+                "<button onclick='deletedataset(this)' data-class='#class-1' class='btn btn-block btn-danger mb-2'>Delete</button>"
+            );
             $(".result-container").show();
             $(".video-container").hide();
+            $(activeclass + "-input-button").hide();
+            $(activeclass + "-result-preview").show();
+
             snappedimage[activeclass].forEach(element => {
                 $(".result-container").append(
-                    '<div class="col-3 p-1"><img src="'+element+'" style="width:100%"></div>'
+                    '<div class="col-3 p-1"><img src="' + element + '" style="width:100%"></div>'
+                )
+                $(activeclass + "-result-preview").append(
+                    '<div class="col-3 p-1"><img src="' + element + '" style="width:100%"></div>'
                 )
             });
-            $(activeclass+"input-button").hide();
-            $(activeclass+"input-button").hide();
+
+
         }
 
-        $('.record-btn').click(function(){
+        function rerecording() {
+            snappedimage[activeclass] = [];
+            $(".result-container").html('');
+            $(activeclass + "-result-preview").html('');
+            $(".video-container").show();
+            $('.record-btn').show();
+            $(".stop-btn").hide();
+            turnonwebcam();
+        }
+
+        function deletedataset(e){
+            $(e).parent().html("");
+            var Class = $(e).attr("data-class");
+            $(activeclass + "-input-button").show();
+            $(activeclass + "-result-preview").hide();
+            delete snappedimage[Class];
+        }
+
+        $('.record-btn').click(function () {
             $(".stop-btn").show();
             $(this).hide();
             window.isrecord = true;
             //snap image
-            $(".timer").text((window.limitfps/1000).toString())
+            $(".timer").text((window.limitfps / 1000).toString())
             var timeleft = window.limitfps
             snappedimage[activeclass] = []
-            window.snapping = setInterval(function(){ 
+            window.snapping = setInterval(function () {
                 snap();
                 timeleft -= window.timefps
-                $(".timer").text((timeleft/1000).toFixed(2))
-                if (timeleft <= 0){
+                $(".timer").text((timeleft / 1000).toFixed(2))
+                if (timeleft <= 0) {
                     window.isrecord = false;
                     clearInterval(snapping)
                     renderimagepreview();
                 }
-             }, window.timefps);
+            }, window.timefps);
         })
 
-        
-        $('.stop-btn').click(function(){
+
+        $('.stop-btn').click(function () {
             $(".record-btn").show();
             $(this).hide();
             window.isrecord = false;
             clearInterval(snapping)
             renderimagepreview();
         })
-
     </script>
 </body>
 
