@@ -17,8 +17,58 @@
     crossorigin="anonymous"></script>
 
 <style>
-    .preview-on-input{
+    .preview-on-input {
         max-height: 200px;
         overflow-y: scroll;
     }
+    #preview-temp-upload{
+        max-height: 300px;
+        overflow-y: scroll;
+    }
 </style>
+
+<script>
+    $.fn.center = function () {
+        this.css("position", "absolute");
+        this.css("top", ($(window).height() - this.height()) / 2 + $(window).scrollTop() + "px");
+        this.css("left", ($(window).width() - this.width()) / 2 + $(window).scrollLeft() + "px");
+        return this;
+    }
+</script>
+<script src="{% static 'assets/js/BlockUI.js' %}"></script>
+<script>
+    function blockUI() {
+        $.blockUI({
+            css: {
+                backgroundColor: 'transparent',
+                border: 'none'
+            },
+            message: '<div class="loading"><i style="font-size: 55px;" class="fas fa-spinner fa-spin text-dark"></i></div>',
+            baseZ: 1500,
+            overlayCSS: {
+                backgroundColor: '#FFFFFF',
+                opacity: 0.6,
+                cursor: 'wait'
+            }
+        });
+        $('.blockUI.blockMsg').center();
+    }
+
+    function blockEl(target) {
+        $(target).blockUI({
+            css: {
+                backgroundColor: 'transparent',
+                border: 'none'
+            },
+            message: '<div class="loading"></div>',
+            baseZ: 1500,
+            overlayCSS: {
+                backgroundColor: '#FFFFFF',
+                opacity: 0.6,
+                cursor: 'wait'
+            }
+        });
+        $('.blockUI.blockMsg').center();
+    }
+
+</script>

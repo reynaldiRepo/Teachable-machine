@@ -51,6 +51,7 @@
                                                                                 class="fas fa-camera mr-2"></i>
                                                                             Webcam</button>
                                                                         <button class="btn btn-info input-upload"
+                                                                            onclick="openmodalupload(this)"
                                                                             data-input-name="#class-1-input-name"
                                                                             data-class="#class-1"><i
                                                                                 class="fas fa-upload mr-2"></i>
@@ -65,16 +66,104 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="card card-bordered card-class" id="class-2">
+                                                        <div class="card-inner">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <input placeholder="Name Class" type="text"
+                                                                            class="form-control input-class-name"
+                                                                            id="class-2-input-name" value="Class 2">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 mt-2">
+                                                                    <div class="form-group" id="class-2-input-button">
+                                                                        <button class="btn btn-info input-webcam"
+                                                                            onclick="openmodalrecord(this)"
+                                                                            data-input-name="#class-2-input-name"
+                                                                            data-class="#class-2"><i
+                                                                                class="fas fa-camera mr-2"></i>
+                                                                            Webcam</button>
+                                                                        <button class="btn btn-info input-upload"
+                                                                            onclick="openmodalupload(this)"
+                                                                            data-input-name="#class-2-input-name"
+                                                                            data-class="#class-2"><i
+                                                                                class="fas fa-upload mr-2"></i>
+                                                                            Upload Image</button>
+                                                                    </div>
+                                                                    <div class="row p-3 result-preview preview-on-input"
+                                                                        id="class-2-result-preview">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
 
                                                 <div class="row mt-4">
                                                     <div class="col-md-12">
-                                                        <button class="add-class btn btn-light"><i
+                                                        <button class="add-class btn btn-light" onclick="addclass()"><i
                                                                 class="fas fa-plus mr-2"></i> Add Class</button>
                                                     </div>
                                                 </div>
 
                                             </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="card card-bordered">
+                                                    <div class="card-inner">
+                                                        <div class="card-title-group align-start mb-2">
+                                                            <div class="card-title">
+                                                                <h6 class="title">Setup Training</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" >
+                                                            <div class="col-md-12">
+                                                                <hr>
+                                                                <form action="" method="post" id="dotraining-form">
+                                                                    <div class="form-group">
+                                                                        <label>Epoch</label>
+                                                                        <input type="number" name="epoch" value=50 placeholder="Epoch" class="form-control" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Batch Size</label>
+                                                                        <select type="number" name="batch" value=50 placeholder="Epoch" class="form-control">
+                                                                            <option value="16">16</option>
+                                                                            <option value="32">32</option>
+                                                                            <option value="64">64</option>
+                                                                            <option value="128">128</option>
+                                                                            <option value="256">256</option>
+                                                                            <option value="512">512</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Batch Size</label>
+                                                                        <select type="number" name="batch" value=50 placeholder="Epoch" class="form-control">
+                                                                            <option value="16">16</option>
+                                                                            <option value="32">32</option>
+                                                                            <option value="64">64</option>
+                                                                            <option value="128">128</option>
+                                                                            <option value="256">256</option>
+                                                                            <option value="512">512</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Learning Rate</label>
+                                                                        <input type="number" name="learningrate" step="0.001" value="0.001" 
+                                                                        class="form-control" required min="0.001" max="1">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button class="btn btn-info btn-block">Train</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -122,13 +211,50 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade modal-upload" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload Your Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="upload-file" class="alert alert-info w-100 text-center mb-0"
+                                    style="cursor:pointer">Choose File</label>
+                                <input type="file" multiple id="upload-file" hidden accept="image/*">
+                            </div>
+                            <button class="btn btn-info m-3 btn-block" id="save-upload-btn">SAVE</button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" id="preview-temp-upload">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script src="{% static 'assets/js/scripts.js' %}"></script>
 
     <script>
+        //initiate variable
         $(".stop-btn").hide();
         $(".result-container").hide();
         $(".result-preview").hide();
+        $("#save-upload-btn").hide();
         var webcam = document.getElementById('webcam-container');
         window.stream = "";
         window.snappedimage = {};
@@ -143,6 +269,8 @@
         window.capturer = document.getElementById('canvas-capturer');
         window.snapping = null; //for setinterval snapping image webcam
 
+
+        //turn on webcam
         function turnonwebcam() {
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 navigator.mediaDevices.getUserMedia({
@@ -181,6 +309,8 @@
             }
         }
 
+
+        //turn of webcam
         function turnoffwebcam() {
             webcam.pause();
             webcam.src = "";
@@ -188,13 +318,13 @@
             console.log("Vid off");
         }
 
-
+        //open modal webcam
         function openmodalrecord(e) {
             if ($("#class-1-input-name").val() == "") {
                 Swal.fire("warning", "Insert Class Name", "warning");
                 return;
             }
-            if (window.isrecord == false){
+            if (window.isrecord == false) {
                 $(".timer").text((window.limitfps / 1000).toFixed(0));
             }
             $('.modal-webcam').modal('show');
@@ -202,9 +332,10 @@
             window.activeclass = $(e).attr("data-class")
         }
 
+        // on modal close
         $('.modal-webcam').on('hidden.bs.modal', function () {
             turnoffwebcam()
-            if (window.isrecord == true){
+            if (window.isrecord == true) {
                 window.isrecord = false
                 clearInterval(snapping)
                 renderimagepreview();
@@ -216,19 +347,22 @@
             $(".stop-btn").hide();
         })
 
+        // snap image
         function snap() {
             var context = capturer.getContext('2d');
             context.drawImage(webcam, 0, 0, 320, 240);
             snappedimage[activeclass].push(capturer.toDataURL())
         }
 
+        // render image preview
         function renderimagepreview() {
+            blockUI()
             turnoffwebcam();
             $(".result-container").append(
                 '<div class="col-md-12 mb-2"><button class="btn btn-info" onclick="rerecording()">Record Again ? </button></div>'
             )
             $(activeclass + "-result-preview").html(
-                "<button onclick='deletedataset(this)' data-class='#class-1' class='btn btn-block btn-danger mb-2'>Delete</button>"
+                "<button onclick='deletedataset(this)' data-class='"+activeclass+"' class='btn btn-block btn-danger mb-2'>Delete</button>"
             );
             $(".result-container").show();
             $(".video-container").hide();
@@ -243,10 +377,10 @@
                     '<div class="col-3 p-1"><img src="' + element + '" style="width:100%"></div>'
                 )
             });
-
-
+            $.unblockUI();
         }
 
+        //start recording
         function rerecording() {
             snappedimage[activeclass] = [];
             $(".result-container").html('');
@@ -257,14 +391,7 @@
             turnonwebcam();
         }
 
-        function deletedataset(e){
-            $(e).parent().html("");
-            var Class = $(e).attr("data-class");
-            $(activeclass + "-input-button").show();
-            $(activeclass + "-result-preview").hide();
-            delete snappedimage[Class];
-        }
-
+        // record btn
         $('.record-btn').click(function () {
             $(".stop-btn").show();
             $(this).hide();
@@ -286,6 +413,7 @@
         })
 
 
+        // stop btn
         $('.stop-btn').click(function () {
             $(".record-btn").show();
             $(this).hide();
@@ -293,6 +421,92 @@
             clearInterval(snapping)
             renderimagepreview();
         })
+
+
+        //delete dataset
+        function deletedataset(e) {
+            
+            var Class = $(e).attr("data-class");
+            $(Class+"-result-preview").html("");
+            $(Class + "-input-button").show();
+            $(Class + "-result-preview").hide();
+            delete snappedimage[Class];
+        }
+
+        // modal open upload
+        function openmodalupload(e) {
+            if ($("#class-1-input-name").val() == "") {
+                Swal.fire("warning", "Insert Class Name", "warning");
+                return;
+            }
+            $('.modal-upload').modal('show');
+            window.activeclass = $(e).attr("data-class")
+        }
+
+        //on after choose file
+        $("#upload-file").change(function () {
+            var input = this;
+            var url = $(this).val();
+            var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+            if (input.files && input.files[0]) {
+                var reader;
+                input.files.forEach(element => {
+                    reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#preview-temp-upload").append(
+                            '<div class="col-3 p-1"><img src="'+e.target.result+'" class="w-100"/></div>'
+                        )
+                    }
+                    reader.readAsDataURL(element);
+                });
+            }
+            // show up save button
+            if ($(this).val() != ""){
+                $("#save-upload-btn").show();
+            }
+            $(this).val("");
+        })
+
+        //save temporal upload file
+        function savetempupload(){
+            $("#save-upload-btn").hide();
+            if ($("#preview-temp-upload").find("img").length != 0 ){
+                console.log($("#preview-temp-upload").find("img").length);
+                $("#preview-temp-upload").find("img").each(function(){
+                    if (snappedimage[activeclass] == null){
+                        snappedimage[activeclass] = []
+                    }
+                    snappedimage[activeclass].push($(this).attr("src"))
+                })
+                renderimageonupload();
+            }
+        }
+        
+        //render preiview
+        function renderimageonupload(){
+            $("#preview-temp-upload").html('')
+            $(activeclass + "-result-preview").html(
+                "<button onclick='deletedataset(this)' data-class='"+activeclass+"' class='btn btn-block btn-danger mb-2'>Delete</button>"
+            );
+            $("#preview-temp-upload").show();
+            $(activeclass + "-input-button").hide();
+            $(activeclass + "-result-preview").show();
+            snappedimage[activeclass].forEach(element => {
+                $(activeclass + "-result-preview").append(
+                    '<div class="col-3 p-1"><img src="' + element + '" style="width:100%"></div>'
+                )
+            });
+        }
+
+        $('.modal-upload').on('hidden.bs.modal', function () {
+            savetempupload();
+        })
+
+        $("#save-upload-btn").click(function(){
+            savetempupload();
+            $('.modal-upload').modal('hide');
+        })
+
     </script>
 </body>
 
