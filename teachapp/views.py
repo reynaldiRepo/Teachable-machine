@@ -46,6 +46,7 @@ def starttrain(request):
 
     newMachine.save();
     
+    #iterate label on json data
     for i in data.keys():
         indexImage = 1;
         os.makedirs(os.path.join(newMachine.Directory,i))
@@ -60,4 +61,7 @@ def starttrain(request):
             f.close();
             indexImage +=1;
     
+    # //todo memeasukan ke model cnnn
+
+
     return JsonResponse({"status":200, "msg":"success"}, safe=False)

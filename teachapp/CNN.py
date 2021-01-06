@@ -72,11 +72,36 @@ class CNN :
 
     def readTrainData(self):
         #for test
-        label = ['Class-1', 'Class-2']
-        path = "D:\django_project\teachable/teachapp/static/UserData/M-06012021053644";
+        label = ['Face', 'Masked-Face']
+        path = os.path.join(os.getcwd(), "static", "UserData", "M-06012021065840")
+
+        #real code
+        data = []
         for l in label :
             pathImage = os.path.join(path, l)
+            num_label_class = label.index(l)
             print(pathImage)
+            for img in os.listdir(pathImage):
+                try:
+                    img_arr = cv2.imread(os.path.join(pathImage, img))
+                    resized_arr = cv2.resize(img_arr, (80, 60))
+                    data.append([ resized_arr , num_label_class])
+                except Exception as e:
+                    print(e)
+        return np.array(data)
+
+    def augmenteddata(self, train):
+        x_train = []
+        y_train = []
+        x_val = []
+        y_val = []
+        for feature, label in train:
+            x_train.append(feature)
+            y_train.append(label)
+
+        for feature, label in train:
+            x_val.append(feature)
+            y_val.append(label)
 
     def getSummary(self):
         return self.model.summary()
@@ -85,4 +110,6 @@ class CNN :
 # testing
 newM = CNN(2, 50, 0.001)
 print(newM.getSummary());
-newM.readTrainData()
+dataset = newM.readTrainData()
+print(dataset.shape)
+print(dataset)
