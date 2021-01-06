@@ -552,6 +552,7 @@
                 Swal.fire("error", "Add Dataset first", "error");
                 return;
             }
+
             Object.keys(snappedimage).forEach(element => {
                 if ($(element + "-input-name").val() == "") {
                     Swal.fire("error", "Set class name data", "error");
@@ -565,6 +566,12 @@
                 classname = classname.replace(" ", "-")
                 data[classname] = snappedimage[element];
             })
+
+            if (Object.keys(data).length < 2){
+                Swal.fire("error", "Class name can't be same", "error")
+                return
+            }
+
             console.log(data);
             data = JSON.stringify(data)
             var formdata = new FormData(this)

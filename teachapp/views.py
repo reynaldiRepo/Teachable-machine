@@ -9,17 +9,37 @@ import urllib
 
 from binascii import a2b_base64
 import os
+import shutil
 
-# Create your views here.
+from cnn.CNN import CNN
+
+# Views Apps / controller
 def mainapp(request):
     context = {
         'Title' : "Teaching Machine",
         'SubTitle' : "Define your class, add dataset, make machine learn your data"
     }
+
+    # cleaning database
+    # for m in Machine.objects.all():
+    #     shutil.rmtree(m.Directory)
+    #     print(m.id)
+    #     m.delete()
+    # for mc in MachineClass.objects.all():
+    #     print(mc.id)
+    #     mc.delete() 
+
+    # try get data
+    machine = Machine.objects.get(id = 15)
+    model = CNN(image_size_w = 80, image_size_h = 60, objectMachine = machine)
+    model.fittingModel()
+    
+
     return render (request, 'index.html', context)
 
 def pagetry(request):
     return render (request, 'blank.html', {"data":"hallo"})
+
 
 def starttrain(request):
     post = request.POST
