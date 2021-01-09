@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'teachapp'
+    'teachapp',
+    #running channels libarry
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +133,6 @@ USE_TZ = True
 STATIC_URL = '/teachapp/static/'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
+
+# Channels
+ASGI_APPLICATION = 'teachable.asgi.application'

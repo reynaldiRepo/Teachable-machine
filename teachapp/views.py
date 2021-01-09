@@ -13,32 +13,18 @@ import shutil
 
 from cnn.CNN import CNN
 
+#for unique string web socket
+import uuid 
+
 # Views Apps / controller
 def mainapp(request):
     context = {
         'Title' : "Teaching Machine",
-        'SubTitle' : "Define your class, add dataset, make machine learn your data"
+        'SubTitle' : "Define your class, add dataset, make machine learn your data",
+        'RoomCode' : uuid.uuid4().hex[:6].upper()
     }
 
-    # cleaning database
-    # for m in Machine.objects.all():
-    #     shutil.rmtree(m.Directory)
-    #     print(m.id)
-    #     m.delete()
-    # for mc in MachineClass.objects.all():
-    #     print(mc.id)
-    #     mc.delete() 
-
-    # try get data
-    machine = Machine.objects.get(id = 15)
-    model = CNN(image_size_w = 80, image_size_h = 60, objectMachine = machine)
-    model.fittingModel()
-    
-
     return render (request, 'index.html', context)
-
-def pagetry(request):
-    return render (request, 'blank.html', {"data":"hallo"})
 
 
 def starttrain(request):
@@ -82,6 +68,8 @@ def starttrain(request):
             indexImage +=1;
     
     # //todo memeasukan ke model cnnn
+    model = CNN(image_size_w = 80, image_size_h = 60, objectMachine = newMachine)
+    model.fittingModel()
 
 
     return JsonResponse({"status":200, "msg":"success"}, safe=False)

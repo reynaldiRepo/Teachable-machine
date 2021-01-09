@@ -603,6 +603,23 @@
             })
         })
     </script>
+
+    <!-- try websocket -->
+    <script>
+        var socket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/testing/'
+            + '{{ RoomCode }}'
+            + '/'
+        )
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log(data);
+        };
+    </script>
+
 </body>
 
 </html>
