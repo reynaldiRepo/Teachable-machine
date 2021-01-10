@@ -136,3 +136,11 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800
 
 # Channels
 ASGI_APPLICATION = 'teachable.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

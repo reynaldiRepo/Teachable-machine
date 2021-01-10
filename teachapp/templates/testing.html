@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" class="js">
+
+<head>
+    {% load static %}
+    {% include 'assets.html' %}
+</head>
+
+<body class="nk-body bg-white npc-default has-aside ">
+    <div class="nk-app-root">
+        <div class="nk-main ">
+            <div class="nk-wrap ">
+                {% include 'header.html' %}
+                <div class="nk-content">
+                    <div class="container wide-xl">
+                        <div class="nk-content-inner">
+                            {% include 'menu.html' %}
+                            <div class="nk-content-body">
+                                <div class="nk-content-wrap">
+                                    <div class="nk-block-head nk-block-head-sm">
+                                        <div class="nk-block-between">
+                                            <div class="nk-block-head-content">
+                                                <h3 class="nk-block-title page-title">{{ Title }}</h3>
+                                                <div class="nk-block-des text-soft">
+                                                    <p>{{ SubTitle }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nk-block">
+                                        <div class="row g-gs">
+                                            <div class="col-sm-6">
+                                                <div class="class-container">
+
+                                                    <div class="card card-bordered card-class" id="class-1">
+                                                        <div class="card-inner">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <input placeholder="Name Class" type="text"
+                                                                            class="form-control input-class-name"
+                                                                            id="class-1-input-name" value="Class 1">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 mt-2">
+                                                                    <div class="form-group" id="class-1-input-button">
+                                                                        <button class="btn btn-info input-webcam"
+                                                                            onclick="openmodalrecord(this)"
+                                                                            data-input-name="#class-1-input-name"
+                                                                            data-class="#class-1"><i
+                                                                                class="fas fa-camera mr-2"></i>
+                                                                            Webcam</button>
+                                                                        <button class="btn btn-info input-upload"
+                                                                            onclick="openmodalupload(this)"
+                                                                            data-input-name="#class-1-input-name"
+                                                                            data-class="#class-1"><i
+                                                                                class="fas fa-upload mr-2"></i>
+                                                                            Upload Image</button>
+                                                                    </div>
+                                                                    <div class="row p-3 result-preview preview-on-input"
+                                                                        id="class-1-result-preview">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card card-bordered card-class" id="class-2">
+                                                        <div class="card-inner">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <input placeholder="Name Class" type="text"
+                                                                            class="form-control input-class-name"
+                                                                            id="class-2-input-name" value="Class 2">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 mt-2">
+                                                                    <div class="form-group" id="class-2-input-button">
+                                                                        <button class="btn btn-info input-webcam"
+                                                                            onclick="openmodalrecord(this)"
+                                                                            data-input-name="#class-2-input-name"
+                                                                            data-class="#class-2"><i
+                                                                                class="fas fa-camera mr-2"></i>
+                                                                            Webcam</button>
+                                                                        <button class="btn btn-info input-upload"
+                                                                            onclick="openmodalupload(this)"
+                                                                            data-input-name="#class-2-input-name"
+                                                                            data-class="#class-2"><i
+                                                                                class="fas fa-upload mr-2"></i>
+                                                                            Upload Image</button>
+                                                                    </div>
+                                                                    <div class="row p-3 result-preview preview-on-input"
+                                                                        id="class-2-result-preview">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row mt-4">
+                                                    <div class="col-md-12">
+                                                        <button class="add-class btn btn-light" onclick="addclass()"><i
+                                                                class="fas fa-plus mr-2"></i> Add Class</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="card card-bordered">
+                                                    <div class="card-inner">
+                                                        <div class="card-title-group align-start mb-2">
+                                                            <div class="card-title">
+                                                                <h6 class="title">Setup Training</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <hr>
+                                                                <form action="starttrain" method="post"
+                                                                    id="dotraining-form">
+                                                                    <div class="form-group">
+                                                                        <label>Epoch</label>
+                                                                        <input type="number" name="epoch" value=50
+                                                                            placeholder="Epoch" class="form-control"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Batch Size</label>
+                                                                        <select type="number" name="batch" value=50
+                                                                            placeholder="Epoch" class="form-control">
+                                                                            <option value="16">16</option>
+                                                                            <option value="32">32</option>
+                                                                            <option value="64">64</option>
+                                                                            <option value="128">128</option>
+                                                                            <option value="256">256</option>
+                                                                            <option value="512">512</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Learning Rate</label>
+                                                                        <input type="number" name="learningrate"
+                                                                            step="0.001" value="0.001"
+                                                                            class="form-control" required min="0.001"
+                                                                            max="1">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <button type="submit"
+                                                                            class="btn btn-info btn-block">Train</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {% include 'footer.html' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="{% static 'assets/js/scripts.js' %}"></script>
+</body>
+
+</html>

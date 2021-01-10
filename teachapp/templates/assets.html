@@ -30,6 +30,9 @@
         max-height: 300px;
         overflow-y: scroll;
     }
+    .loading {
+        color : #7f8dff !important;
+    }
 </style>
 
 <script>
@@ -48,7 +51,24 @@
                 backgroundColor: 'transparent',
                 border: 'none'
             },
-            message: '<div class="loading"><i style="font-size: 55px;" class="fas fa-spinner fa-spin text-dark"></i></div>',
+            message: '<div class="loading"><i style="font-size: 55px;" class="fas fa-spinner fa-spin"></i></div>',
+            baseZ: 1500,
+            overlayCSS: {
+                backgroundColor: '#FFFFFF',
+                opacity: 0.6,
+                cursor: 'wait'
+            }
+        });
+        $('.blockUI.blockMsg').center();
+    }
+
+    function blockLogkUI() {
+        $.blockUI({
+            css: {
+                backgroundColor: 'transparent',
+                border: 'none'
+            },
+            message: '<div class="loading" id="log-place" style="font-weight:600;font-size: 25px;"><i class="fas fa-spinner fa-spin"></i></div>',
             baseZ: 1500,
             overlayCSS: {
                 backgroundColor: '#FFFFFF',

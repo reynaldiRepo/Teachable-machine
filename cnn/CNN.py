@@ -107,9 +107,10 @@ class CNN :
                 machineclass.save()
 
 
-    def fittingModel(self):
+    def fittingModel(self, Callback):
         self.history = self.model.fit(self.x_train, self.y_train, batch_size=self.batch,
-        epochs=self.epoch, validation_data = (self.x_train, self.y_train))
+        epochs=self.epoch, validation_data = (self.x_train, self.y_train),
+        callbacks=[Callback])
         self.savingmodel()
 
     def savingmodel(self):
