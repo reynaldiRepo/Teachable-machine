@@ -17,6 +17,15 @@
     crossorigin="anonymous"></script>
 
 <style>
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color:  #4e60e7b6;
+    }
+
     .preview-on-input {
         max-height: 200px;
         overflow-y: scroll;
@@ -30,8 +39,18 @@
         max-height: 300px;
         overflow-y: scroll;
     }
+
     .loading {
-        color : #7f8dff !important;
+        color: black !important;
+    }
+
+    .inner-prediction {
+        width: 0px;
+        -moz-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+        -webkit-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+        -moz-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+        -o-transition: width 1s ease-in-out, left 1.5s ease-in-out;
+        transition: width 1s ease-in-out, left 1.5s ease-in-out;
     }
 </style>
 
@@ -55,7 +74,7 @@
             baseZ: 1500,
             overlayCSS: {
                 backgroundColor: '#FFFFFF',
-                opacity: 0.6,
+                opacity: 0.8,
                 cursor: 'wait'
             }
         });
@@ -72,7 +91,7 @@
             baseZ: 1500,
             overlayCSS: {
                 backgroundColor: '#FFFFFF',
-                opacity: 0.6,
+                opacity: 0.8,
                 cursor: 'wait'
             }
         });

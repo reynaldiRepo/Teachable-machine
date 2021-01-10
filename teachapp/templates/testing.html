@@ -29,131 +29,62 @@
                                     </div>
                                     <div class="nk-block">
                                         <div class="row g-gs">
+
                                             <div class="col-sm-6">
                                                 <div class="class-container">
-
                                                     <div class="card card-bordered card-class" id="class-1">
                                                         <div class="card-inner">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <input placeholder="Name Class" type="text"
-                                                                            class="form-control input-class-name"
-                                                                            id="class-1-input-name" value="Class 1">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12 mt-2">
-                                                                    <div class="form-group" id="class-1-input-button">
-                                                                        <button class="btn btn-info input-webcam"
-                                                                            onclick="openmodalrecord(this)"
-                                                                            data-input-name="#class-1-input-name"
-                                                                            data-class="#class-1"><i
-                                                                                class="fas fa-camera mr-2"></i>
-                                                                            Webcam</button>
-                                                                        <button class="btn btn-info input-upload"
-                                                                            onclick="openmodalupload(this)"
-                                                                            data-input-name="#class-1-input-name"
-                                                                            data-class="#class-1"><i
-                                                                                class="fas fa-upload mr-2"></i>
-                                                                            Upload Image</button>
-                                                                    </div>
-                                                                    <div class="row p-3 result-preview preview-on-input"
-                                                                        id="class-1-result-preview">
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="card card-bordered card-class" id="class-2">
-                                                        <div class="card-inner">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <input placeholder="Name Class" type="text"
-                                                                            class="form-control input-class-name"
-                                                                            id="class-2-input-name" value="Class 2">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-12 mt-2">
-                                                                    <div class="form-group" id="class-2-input-button">
-                                                                        <button class="btn btn-info input-webcam"
-                                                                            onclick="openmodalrecord(this)"
-                                                                            data-input-name="#class-2-input-name"
-                                                                            data-class="#class-2"><i
-                                                                                class="fas fa-camera mr-2"></i>
-                                                                            Webcam</button>
-                                                                        <button class="btn btn-info input-upload"
-                                                                            onclick="openmodalupload(this)"
-                                                                            data-input-name="#class-2-input-name"
-                                                                            data-class="#class-2"><i
-                                                                                class="fas fa-upload mr-2"></i>
-                                                                            Upload Image</button>
-                                                                    </div>
-                                                                    <div class="row p-3 result-preview preview-on-input"
-                                                                        id="class-2-result-preview">
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div class="row mt-4">
-                                                    <div class="col-md-12">
-                                                        <button class="add-class btn btn-light" onclick="addclass()"><i
-                                                                class="fas fa-plus mr-2"></i> Add Class</button>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="card card-bordered">
-                                                    <div class="card-inner">
-                                                        <div class="card-title-group align-start mb-2">
                                                             <div class="card-title">
-                                                                <h6 class="title">Setup Training</h6>
+                                                                <h6 class="title">Test with your webcam</h6>
                                                             </div>
                                                         </div>
                                                         <div class="row">
+                                                            <div class="col-md-12 pl-4 pr-4">
+                                                                <button class="start-test-btn btn btn-info btn-block">
+                                                                    Start Test
+                                                                    <i class="ml-2 fas fa-play"></i>
+                                                                </button>
+                                                                <button class="end-test-btn btn btn-danger btn-block">
+                                                                    End Test
+                                                                    <i class="ml-2 fas fa-stop"></i>
+                                                                </button>
+                                                            </div>
                                                             <div class="col-md-12">
+                                                                <div
+                                                                    class="cam-container m-3 border text-center bg-dark">
+                                                                    <video id="webcam-container" width="100%"
+                                                                        height="240" autoplay></video>
+                                                                </div>
+                                                                <canvas hidden id="canvas-capturer" width="80"
+                                                                    height="60"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="class-container">
+                                                    <div class="card card-bordered card-class" id="class-1">
+                                                        <div class="card-inner">
+                                                            <div class="card-title">
+                                                                <h6 class="title">Classification Results</h6>
                                                                 <hr>
-                                                                <form action="starttrain" method="post"
-                                                                    id="dotraining-form">
-                                                                    <div class="form-group">
-                                                                        <label>Epoch</label>
-                                                                        <input type="number" name="epoch" value=50
-                                                                            placeholder="Epoch" class="form-control"
-                                                                            required>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="metter-container w-100"
+                                                                    style="height: 295px; overflow-y:auto">
+                                                                    {% for C in Machine.getMachineClass %}
+                                                                    <div class="col-md-12 mb-2">
+                                                                        <label class="mb-1">{{ C.Name }}</label>
+                                                                        <div class="outer-prediction w-100 bg-light">
+                                                                            <div class="inner-prediction p-1 bg-success"
+                                                                                id="meter-{{ C.Name }}">
+                                                                                &nbsp
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="form-group">
-                                                                        <label>Batch Size</label>
-                                                                        <select type="number" name="batch" value=50
-                                                                            placeholder="Epoch" class="form-control">
-                                                                            <option value="16">16</option>
-                                                                            <option value="32">32</option>
-                                                                            <option value="64">64</option>
-                                                                            <option value="128">128</option>
-                                                                            <option value="256">256</option>
-                                                                            <option value="512">512</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label>Learning Rate</label>
-                                                                        <input type="number" name="learningrate"
-                                                                            step="0.001" value="0.001"
-                                                                            class="form-control" required min="0.001"
-                                                                            max="1">
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <button type="submit"
-                                                                            class="btn btn-info btn-block">Train</button>
-                                                                    </div>
-                                                                </form>
+                                                                    {% endfor %}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -175,6 +106,149 @@
 
     </div>
     <script src="{% static 'assets/js/scripts.js' %}"></script>
+
+    <script>
+        var webcam = document.getElementById('webcam-container');
+        window.stream = "";
+        window.capturer = document.getElementById('canvas-capturer');
+        window.timefps = 500 // 5fps -- for avoid crash thread
+        window.isDoTesting = false
+    </script>
+    <script>
+        // socket function
+        var socket = new WebSocket(
+            'ws://' +
+            window.location.host +
+            '/ws/teaching/' +
+            '{{ RoomCode }}' +
+            '/'
+        )
+
+        socket.onmessage = function (e) {
+            console.log(e);
+            data = JSON.parse(e.data)
+
+            if (data.state == "machine_ready") {
+                $("#log-place").html("Machine Ready")
+                setTimeout(() => {
+                    $.unblockUI();
+                }, 2000);
+            }
+
+            if (data.state == "testing_result") {
+                if (window.isDoTesting) {
+                    scorePrediction = data.data
+                    Object.keys(scorePrediction).forEach(el => {
+                        console.log(el);
+                        $("#meter-" + el).css("width", parseFloat(scorePrediction[el]) / 1 * 100 + "%")
+                    })
+                }else{
+                    $(".inner-prediction").css("width", "0px")
+                }
+            }
+
+        };
+
+        socket.onclose = function (e) {
+            Swal.fire("warning", "WevSocket is close, we will refresh your page", "warning")
+            location.reload()
+        }
+    </script>
+
+    <script>
+        //hiding end testing control
+        $(".end-test-btn").hide();
+
+        //spinner tamplate
+        var spinner = '<i class="fas fa-spinner fa-spin mr-2"></i>'
+
+        //turn on webcam
+        function turnonwebcam() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({
+                    video: true
+                }).then(function (stream) {
+                    webcam.srcObject = stream;
+                    window.stream = stream;
+                    webcam.play();
+                });
+            } else if (navigator.getUserMedia) { // Standard
+                navigator.getUserMedia({
+                    video: true
+                }, function (stream) {
+                    webcam.src = stream;
+                    window.stream = stream;
+                    webcam.play();
+                }, errBack);
+            } else if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+                navigator.webkitGetUserMedia({
+                    video: true
+                }, function (stream) {
+                    webcam.src = window.webkitURL.createObjectURL(stream);
+                    window.stream = stream;
+                    webcam.play();
+                }, errBack);
+            } else if (navigator.mozGetUserMedia) { // Mozilla-prefixed
+                navigator.mozGetUserMedia({
+                    video: true
+                }, function (stream) {
+                    webcam.srcObject = stream;
+                    window.stream = stream;
+                    webcam.play();
+                }, errBack);
+            } else {
+                Swal.fire("error", "Doesnt Support Webcam", "error")
+            }
+        }
+
+
+        //turn of webcam
+        function turnoffwebcam() {
+            webcam.pause();
+            webcam.src = "";
+            window.stream.getTracks()[0].stop();
+            console.log("Vid off");
+        }
+
+
+        $(document).ready(function () {
+            turnonwebcam();
+            // waiting model ready
+            blockLogkUI()
+            $("#log-place").html(spinner + "Starting Machine..")
+        })
+
+        function snap() {
+            var context = capturer.getContext('2d');
+            context.drawImage(webcam, 0, 0, 80, 60);
+            return capturer.toDataURL()
+        }
+
+        //start testing with webcam input
+        $(".start-test-btn").click(function () {
+            window.isDoTesting = true
+            $(".end-test-btn").show();
+            $(this).hide();
+            window.snapping = setInterval(function () {
+                var dataurl = snap();
+                socket.send(JSON.stringify({
+                    "message": "new image data",
+                    "state": "send_data_test",
+                    "dataurl": dataurl
+                }))
+            }, window.timefps);
+        })
+
+        $(".end-test-btn").click(function () {
+            window.isDoTesting = false
+            $(".start-test-btn").show();
+            $(".inner-prediction").css("width", "0px")
+            $(this).hide();
+            clearInterval(window.snapping)
+        })
+    </script>
+
+
 </body>
 
 </html>

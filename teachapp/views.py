@@ -2,6 +2,8 @@ from django.shortcuts import render
 from teachapp.models import Machine
 from teachapp.models import MachineClass
 from django.http import JsonResponse
+from django.http import HttpResponse
+from django.http import Http404
 
 import json
 from datetime import datetime
@@ -24,6 +26,8 @@ from teachapp.consumer import doSendLogTraining
 #for unique string web socket
 import uuid 
 
+from django.views.static import serve
+
 # Views Apps / controller
 def mainapp(request):
     context = {
@@ -39,14 +43,13 @@ def mainapp(request):
     response = render (request, 'index.html', context)
     response.set_cookie("RoomCode", "teachapp_"+context['RoomCode'], expires=expires)
 
-    for m in Machine.objects.all():
-        shutil.rmtree(m.Directory)
-        print(m.id)
-        m.delete()
-    for mc in MachineClass.objects.all():
-        print(mc.id)
-        mc.delete()
-
+    # for m in Machine.objects.all():
+    #     shutil.rmtree(m.Directory)
+    #     print(m.id)
+    #     m.delete()
+    # for mc in MachineClass.objects.all():
+    #     print(mc.id)
+    #     mc.delete()
 
     return response
 
@@ -112,16 +115,45 @@ def starttrain(request):
     callback = TrainingCallback(RoomName=request.COOKIES.get('RoomCode'))
     model.fittingModel(Callback=callback)
 
-    return JsonResponse({"status":200, "msg":"success", }, safe=False)
+    return JsonResponse({"status":200, "msg":"success", "MachineID":newMachine.id}, safe=False)
 
 def testing(request, machineid):
+    
+    if Machine.objects.filter(id=machineid).count() == 0:
+        raise Http404;
+    
+
+    machine = Machine.objects.get(id=machineid)
+    
+    randomid = str("testing_")+uuid.uuid4().hex[:6].upper()+"_"+str(machineid)
+
     context = {
         'Title' : "Your machine are ready",
         'SubTitle' : "Start testing, Our Machine Has been learn your data",
+        'Machine' : machine,
+        'RoomCode' : randomid
     }
 
     response = render (request, 'testing.html', context)
-    response.set_cookie("RoomCode", "teachapp_"+str(machineid))
+
+    tomorrow = datetime.now() + timedelta(days = 1)
+    tomorrow = datetime.replace(tomorrow, hour=0, minute=0, second=0)
+    expires = datetime.strftime(tomorrow, "%a, %d-%b-%Y %H:%M:%S GMT")
+    response.set_cookie("RoomCode", "teachapp_"+context['RoomCode'], expires=expires)
+
     return response
+
+def downloadModel(request, machineid):
+    print(machineid)
+    if Machine.objects.filter(id=machineid).count() == 0:
+        raise Http404;
+    machine = Machine.objects.get(id=machineid)
+    file_path = machine.getExportFile();
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/zip")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 

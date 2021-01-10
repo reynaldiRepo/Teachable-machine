@@ -1,4 +1,7 @@
 from django.db import models
+from zipfile import ZipFile
+import os
+from django import conf
 
 # Create your models here.
 
@@ -20,6 +23,14 @@ class Machine (models.Model):
         for c in mc:
             data.append(c.Name)
         return data
+
+    def getExportFile(self):
+        zipfile = os.path.join(self.Directory, self.Name+".zip");
+        zipObj = ZipFile(file=zipfile, mode='w')
+        zipObj.write(os.path.join(self.Directory, "model.h5"), "model.h5")
+        zipObj.write(os.path.join(self.Directory, "model.json"), "model.json")
+        zipObj.close()
+        return zipfile;
 
 class MachineClass (models.Model):
     Name = models.CharField(max_length=255)

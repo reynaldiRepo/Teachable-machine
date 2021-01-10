@@ -3,6 +3,7 @@ from keras.layers import Dense, Input, Dropout, Flatten, Conv2D,  Activation, Ma
 from keras.models import Model, Sequential
 from keras.optimizers import Adam
 from keras.utils import to_categorical
+from keras.models import load_model
 
 
 import cv2
@@ -95,22 +96,21 @@ class CNN :
         # make categorical
         self.y_train = to_categorical(self.y_train, self.nb_classes)
 
-        # make uniqeCategorical for update ClassEncoding Machine Class
-        uniqueCategorical = np.vstack({tuple(row) for row in self.y_train})
-
         # asume that label is sorted same with self.labelClass
         print(self.labelClass)
         for label in self.labelClass:
             machineclass = self.objectMachine.getMachineClass().get(Name = label)
             if (machineclass):
-                machineclass.ClassEncoding = uniqueCategorical[self.labelClass.index(label)]
+                machineclass.ClassEncoding = self.labelClass.index(label)
                 machineclass.save()
 
 
     def fittingModel(self, Callback):
-        self.history = self.model.fit(self.x_train, self.y_train, batch_size=self.batch,
-        epochs=self.epoch, validation_data = (self.x_train, self.y_train),
+        self.history = self.model.fit(self.x_train, self.y_train, 
+        batch_size=self.batch,
+        epochs=self.epoch,
         callbacks=[Callback])
+        self.evaluate = self.model.evaluate(self.x_train, self.y_train, verbose=0)
         self.savingmodel()
 
     def savingmodel(self):
@@ -120,17 +120,43 @@ class CNN :
         with open(os.path.join(path, "model.json"), "w") as json_file:
             json_file.write(model_json)
         json_file.close();
-        # serialize weights to HDF5
-        self.model.save_weights( os.path.join(path, "model.h5"))
+        # serialize model to HDF5
+        self.model.save( os.path.join(path, "model.h5") )
         print("Saved model to disk")
 
     def getSummary(self):
         self.model.summary()
 
 
+class ModelLoader():
+    def __init__(self, objectMachine):
+        self.objectMachine = objectMachine
+        self.modelh5 = os.path.join(objectMachine.Directory, "model.h5")
+        self.model = load_model(filepath=self.modelh5)
+        self.model.summary()
+    
+    def makepredict(self, pathimage):
+        img_arr = cv2.imread(pathimage)
+        resized_arr = cv2.resize(img_arr, (80, 60))
+        resized_arr = np.array([resized_arr])
+        #normalize 
+        dataTest = np.array(resized_arr) / 255
+        # shape = (60, 80, 3)
+        dataTest.reshape(-1, 80, 60, 1)
+        # print(dataTest)
+
+        prediction = self.model.predict(dataTest)
+        label = self.objectMachine.getArrayLabelClass()
+        result = {}
+        for i in range (len(prediction[0])):
+            result[label[i]] = float(prediction[0][i])
+        return result
+
+    
+
+
 # # # testing
 # newM = CNN( nb_classes= 2, epoch = 50, batch= 16 , learning_rate = 0.001, image_size_w= 80, image_size_h= 80)
-
 # print(newM.x_train)
 # print(newM.x_train[0].shape)
 # print(newM.y_train)
