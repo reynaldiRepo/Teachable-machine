@@ -475,8 +475,6 @@
         //on after choose file
         $("#upload-file").change(function () {
             var input = this;
-            var url = $(this).val();
-            var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
             if (input.files && input.files[0]) {
                 var reader;
                 input.files.forEach(element => {

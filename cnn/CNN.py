@@ -1,5 +1,5 @@
 
-from keras.layers import Dense, Input, Dropout, Flatten, Conv2D,  Activation, MaxPool2D
+from keras.layers import Dense, Input, Dropout, Flatten, Conv2D,  Activation, MaxPooling2D
 from keras.models import Model, Sequential
 from keras.optimizers import Adam
 from keras.utils import to_categorical
@@ -32,17 +32,22 @@ class CNN :
 
         # 1 - Convolution
         self.model.add(Conv2D(32,3,padding="same", activation="relu", input_shape=(self.image_size_h,self.image_size_w,3)))
-        self.model.add(MaxPool2D())
+        self.model.add(Activation('relu'))
+        self.model.add(MaxPooling2D(pool_size=(2, 2)))
 
-        self.model.add(Conv2D(32, 3, padding="same", activation="relu"))
-        self.model.add(MaxPool2D())
+        self.model.add(Conv2D(32, (3, 3)))
+        self.model.add(Activation('relu'))
+        self.model.add(MaxPooling2D(pool_size=(2, 2)))
 
-        self.model.add(Conv2D(64, 3, padding="same", activation="relu"))
-        self.model.add(MaxPool2D())
-        self.model.add(Dropout(0.4))
+        self.model.add(Conv2D(64, (3, 3)))
+        self.model.add(Activation('relu'))
+        self.model.add(MaxPooling2D(pool_size=(2, 2)))
 
         self.model.add(Flatten())
-        self.model.add(Dense(128,activation="relu"))
+        self.model.add(Dense(64))
+        self.model.add(Activation('relu'))
+        self.model.add(Dropout(0.5))
+        self.model.add(Dense(1))
         self.model.add(Dense(self.nb_classes, activation="softmax"))
 
         opt = Adam(lr= self.learning_rate)

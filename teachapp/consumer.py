@@ -104,7 +104,8 @@ class TestingConsumer(AsyncWebsocketConsumer):
         if "state" in text_data_json :
             if text_data_json['state'] == "send_data_test":
                 test = await self.dotest(urlraw = text_data_json['dataurl'])
-                await TestingConsumer.sendTestingResult(RoomCode=self.room_group_name, data=test)
+                type_input = text_data_json['type_input']
+                await TestingConsumer.sendTestingResult(RoomCode=self.room_group_name, data=test, type_input=type_input)
                 print(test)
 
         else :
@@ -141,13 +142,15 @@ class TestingConsumer(AsyncWebsocketConsumer):
     async def testing_result(self, event):
         message = event['message']
         data = event['data']
+        type_input = event['type_input']
         print("msg from room ", message)
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
             'state' : "testing_result",
-            'data' : data
+            'data' : data,
+            'type_input' : type_input
         }))
 
     async def sendLogTraining(RoomCode ,Log):
@@ -170,14 +173,15 @@ class TestingConsumer(AsyncWebsocketConsumer):
             }
         )
 
-    async def sendTestingResult(RoomCode ,data):
+    async def sendTestingResult(RoomCode ,data, type_input):
         channles = layers.get_channel_layer()
         await channles.group_send(
             RoomCode,
             {
                 'type': 'testing_result',
-                'message': "Finishing Testing",
-                'data' : data
+                'message': "Testing Result",
+                'data' : data,
+                'type_input' : type_input
             }
         )
 
