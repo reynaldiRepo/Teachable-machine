@@ -620,6 +620,62 @@
             var spinner = '<i class="fas fa-spinner fa-spin mr-2"></i>'
             $("#log-place").html(spinner+data.message)
         };
+
+
+        //new script for add class
+        function renderInputForm(className){
+            var strhtml = '<div class="card card-bordered card-class" id="'+className+'">'+
+                '<div class="card-inner">'+
+                    '<div class="row">'+
+                        '<span class="close delete-class" data-target="'+className+'" onclick="deleteclass(this)"><i class="fa fa-times"></i></span>'+
+                        '<div class="col-md-12">'+
+                            '<div class="form-group">'+
+                                '<input placeholder="Name Class" type="text"'+
+                                    'class="form-control input-class-name"'+
+                                    'id="'+className+'-input-name" value="'+className+'">'+
+                            '</div>'+
+                        '</div>' +
+                        '<div class="col-md-12 mt-2">' + 
+                            '<div class="form-group" id="'+className+'-input-button">' +
+                                '<button class="btn btn-info input-webcam"' +
+                                    'onclick="openmodalrecord(this)"' +
+                                    'data-input-name="#'+className+'-input-name" '+
+                                    'data-class="#'+className+'"><i' +
+                                        'class="fas fa-camera mr-2"></i>' + 
+                                    'Webcam</button> ' + 
+                                '<button class="btn btn-info input-upload"' +
+                                    'onclick="openmodalupload(this)"' +
+                                    'data-input-name="#'+className+'-input-name"' +
+                                    'data-class="#'+className+'"><i' +
+                                        'class="fas fa-upload mr-2"></i>' + 
+                                    'Upload Image</button>' +
+                            '</div>' +
+                            '<div class="row p-3 result-preview preview-on-input"' +
+                                'id="'+className+'-result-preview">' +
+                            '</div>' + 
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+            return strhtml
+        }
+
+        function addclass(){
+            var listObj = Object.keys(listclass)
+            var lastClass = parseInt(listObj[listObj.length - 1]) + 1
+            window.listclass[lastClass] = "#class-"+lastClass
+            var classForHtml = ("#class-"+lastClass).replace("#", "")
+            newHtml = renderInputForm(classForHtml)
+            $(".class-container").append(newHtml)
+        }
+
+        function deleteclass(e){
+            var classTarget = "#"+$(e).attr("data-target")
+            var idClassTarget = $(e).attr("data-target").replace("class-", "")
+            delete window.listclass[idClassTarget]
+            $(classTarget).remove()
+        }
+        
     </script>
 
 </body>
