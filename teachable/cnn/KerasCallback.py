@@ -6,7 +6,6 @@ class TrainingCallback (Callback):
     
     def __init__(self, RoomName):
         super(TrainingCallback, self).__init__()
-
         # to send callback message to user
         self.RoomName = RoomName;
     

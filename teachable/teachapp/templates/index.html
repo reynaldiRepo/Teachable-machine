@@ -422,7 +422,6 @@
             renderimagepreview();
         })
 
-
         //delete dataset
         function deletedataset(e) {
 
@@ -622,6 +621,11 @@
             var spinner = '<i class="fas fa-spinner fa-spin mr-2"></i>'
             $("#log-place").html(spinner+data.message)
         };
+
+        socket.onclose = function (e) {
+            Swal.fire("warning", "WebSocket is close, we will refresh your page", "warning")
+            location.reload()
+        }
 
 
         //new script for add class
