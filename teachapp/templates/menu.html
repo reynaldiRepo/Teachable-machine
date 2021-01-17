@@ -6,28 +6,32 @@
                 <h6 class="overline-title text-primary-alt">Menu</h6>
             </li><!-- .nk-menu-heading -->
             <li class="nk-menu-item">
-                <a href="" class="nk-menu-link">
+                <a href="/" class="nk-menu-link">
                     <span class="nk-menu-icon"><em class="fab fa-leanpub"></em></span>
                     <span class="nk-menu-text">Teaching Machine</span>
                 </a>
-                <a href="" class="nk-menu-link">
-                    <span class="nk-menu-icon"><i class="fa fa-plus-square"></i></span>
-                    <span class="nk-menu-text">Create Your Machine</span>
-                </a>
-                <a href="" class="nk-menu-link">
-                    <span class="nk-menu-icon"><i class="fas fa-sign-in-alt"></i></span>
-                    <span class="nk-menu-text">Login</span>
-                </a>
+                
+                {% if User == none %}
+                    <a data-toggle="modal" data-target=".modal-login" class="nk-menu-link">
+                        <span class="nk-menu-icon"><i class="fas fa-sign-in-alt"></i></span>
+                        <span class="nk-menu-text">Login</span>
+                    </a>
+                {% else %}
+                    <a href="/usermodels" class="nk-menu-link">
+                        <span class="nk-menu-icon"><i class="fas fa-cog"></i></span>
+                        <span class="nk-menu-text">Your Machine</span>
+                    </a>
+                {% endif %}
             </li><!-- .nk-menu-item -->
             <li class="nk-menu-heading">
                 <h6 class="overline-title text-primary-alt">Special Link</h6>
             </li><!-- .nk-menu-heading -->
             <li class="nk-menu-item">
-                <a href="" class="nk-menu-link">
+                <a href="/our-machine" class="nk-menu-link">
                     <span class="nk-menu-icon"><i class="fab fa-buromobelexperte"></i></span>
                     <span class="nk-menu-text">Our Model</span>
                 </a>
-                <a href="" class="nk-menu-link">
+                <a href="/about-us" class="nk-menu-link">
                     <span class="nk-menu-icon"><em class="fas fa-info"></em></span>
                     <span class="nk-menu-text">About Machine Learner</span>
                 </a>

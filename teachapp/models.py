@@ -2,6 +2,7 @@ from django.db import models
 from zipfile import ZipFile
 import os
 from django import conf
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -13,6 +14,7 @@ class Machine (models.Model):
     epoch = models.CharField(max_length=255, default="")
     batch = models.CharField(max_length=255, default="")
     learningrate = models.CharField(max_length=255, default="")
+    User = models.CharField(max_length=255, default="")
 
     def getMachineClass(self):
         return MachineClass.objects.filter(Machine_ID = self.id);
@@ -25,7 +27,7 @@ class Machine (models.Model):
         return data
 
     def getExportFile(self):
-        zipfile = os.path.join(self.Directory, self.Name+".zip");
+        zipfile = os.path.join(self.Directory, "model.zip");
         zipObj = ZipFile(file=zipfile, mode='w')
         zipObj.write(os.path.join(self.Directory, "model.h5"), "model.h5")
         zipObj.write(os.path.join(self.Directory, "model.json"), "model.json")

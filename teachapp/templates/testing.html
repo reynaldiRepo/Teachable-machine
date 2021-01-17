@@ -27,8 +27,46 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="nk-block">
                                         <div class="row g-gs">
+
+                                            <div class="col-md-12">
+                                                <div class="class-container">
+                                                    <div class="card card-bordered card-class" id="class-1">
+                                                        <div class="card-inner">
+                                                            <div class="row">
+                                                                <div class="col-sm-2 p-0 pt-1 pl-2">
+                                                                    <span>Machine Name</span>
+                                                                </div>
+                                                                <div class="col-sm-4 p-0">
+                                                                    <input name="Name" class="form-control"
+                                                                        value="{{ Machine.Name }}" id="machine-name" />
+                                                                </div>
+                                                                <div class="col-sm-2 pl-2 pr-2">
+                                                                    {% if User == None %}
+                                                                    <button class="btn btn-success btn-block"
+                                                                        data-toggle="modal" data-target=".modal-login">
+                                                                        Save Model
+                                                                    </button>
+                                                                    {% else %}
+                                                                    <button class="btn btn-success btn-block"
+                                                                        onclick="savemodel()">
+                                                                        Save Model
+                                                                    </button>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="col-sm-3 p-0">
+                                                                    <a download href="/downloadmodel/{{ Machine.id }}"
+                                                                        class="btn btn-info btn-block">
+                                                                        Download Model
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <div class="col-sm-6">
                                                 <div class="class-container">
@@ -62,6 +100,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="col-sm-6">
                                                 <div class="class-container">
                                                     <div class="card card-bordered card-class" id="class-1">
@@ -81,7 +120,8 @@
                                                                                 id="meter-{{ C.Name }}">
                                                                                 &nbsp
                                                                             </div>
-                                                                            <span class="score score-meter-{{ C.Name }}">0.0</span>
+                                                                            <span
+                                                                                class="score score-meter-{{ C.Name }}">0.0</span>
                                                                         </div>
                                                                     </div>
                                                                     {% endfor %}
@@ -104,16 +144,21 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12 pl-4 pr-4">
-                                                                <label for="upload-data-test" class="btn btn-block btn-info" style="cursor:pointer">
+                                                                <label for="upload-data-test"
+                                                                    class="btn btn-block btn-info"
+                                                                    style="cursor:pointer">
                                                                     Choose File
                                                                 </label>
-                                                                <input id="upload-data-test" hidden type="file" accept="image/*"/>
+                                                                <input id="upload-data-test" hidden type="file"
+                                                                    accept="image/*" />
                                                             </div>
                                                             <div class="col-md-12">
-                                                                <div class="data-test-preview w-100 pl-2 pr-2 mb-3" style="height:240px">
+                                                                <div class="data-test-preview w-100 pl-2 pr-2 mb-3"
+                                                                    style="height:240px">
                                                                     <img id="data-test-preview"
-                                                                    style="object-fit: contain ;width: 100%;height: 100%;"
-                                                                    src="https://shahpourpouyan.com/wp-content/uploads/2018/10/orionthemes-placeholder-image-1.png" alt="">
+                                                                        style="object-fit: contain ;width: 100%;height: 100%;"
+                                                                        src="https://shahpourpouyan.com/wp-content/uploads/2018/10/orionthemes-placeholder-image-1.png"
+                                                                        alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -139,7 +184,8 @@
                                                                                 id="meter-upload-{{ C.Name }}">
                                                                                 &nbsp
                                                                             </div>
-                                                                            <span class="score score-meter-upload-{{ C.Name }}">0.0</span>
+                                                                            <span
+                                                                                class="score score-meter-upload-{{ C.Name }}">0.0</span>
                                                                         </div>
                                                                     </div>
                                                                     {% endfor %}
@@ -161,6 +207,10 @@
             </div>
 
         </div>
+
+
+        <!-- modal login sign in -->
+        {% include 'login.html' %}
 
     </div>
     <script src="{% static 'assets/js/scripts.js' %}"></script>
@@ -196,21 +246,24 @@
             if (data.state == "testing_result") {
                 if (window.isDoTesting) {
                     scorePrediction = data.data
-                    if (data.type_input == "webcam"){
+                    if (data.type_input == "webcam") {
                         Object.keys(scorePrediction).forEach(el => {
                             console.log(el);
                             $("#meter-" + el).css("width", parseFloat(scorePrediction[el]) / 1 * 100 + "%")
-                            $(".score-meter-"+el).html((parseFloat(scorePrediction[el]) / 1 * 100).toFixed(3)+"%")
+                            $(".score-meter-" + el).html((parseFloat(scorePrediction[el]) / 1 * 100)
+                                .toFixed(3) + "%")
                         })
-                    }else{
+                    } else {
                         Object.keys(scorePrediction).forEach(el => {
                             console.log(el);
-                            $("#meter-upload-" + el).css("width", parseFloat(scorePrediction[el]) / 1 * 100 + "%")
-                            $(".score-meter-upload-"+el).html((parseFloat(scorePrediction[el]) / 1 * 100).toFixed(3)+"%")
+                            $("#meter-upload-" + el).css("width", parseFloat(scorePrediction[el]) / 1 *
+                                100 + "%")
+                            $(".score-meter-upload-" + el).html((parseFloat(scorePrediction[el]) / 1 * 100)
+                                .toFixed(3) + "%")
                         })
                         window.isDoTesting = false
                     }
-                }else{
+                } else {
                     $(".inner-prediction").css("width", "0px")
                 }
             }
@@ -294,6 +347,10 @@
 
         //start testing with webcam input
         $(".start-test-btn").click(function () {
+            if (window.isDoTesting == true) {
+                Swal.fire("warning", "Test state is running", "warning")
+                return
+            }
             window.isDoTesting = true
             $(".end-test-btn").show();
             $(this).hide();
@@ -302,7 +359,7 @@
                 socket.send(JSON.stringify({
                     "message": "new image data",
                     "state": "send_data_test",
-                    "type_input" : "webcam",
+                    "type_input": "webcam",
                     "dataurl": dataurl
                 }))
             }, window.timefps);
@@ -353,6 +410,10 @@
         //on after choose file
         $("#upload-data-test").change(function () {
             var input = this;
+            if (window.isDoTesting == true) {
+                Swal.fire("warning", "Test state is running", "warning")
+                return
+            }
             if (input.files && input.files[0]) {
                 var reader;
                 input.files.forEach(element => {
@@ -364,7 +425,7 @@
                             socket.send(JSON.stringify({
                                 "message": "new image data",
                                 "state": "send_data_test",
-                                "type_input" : "upload",
+                                "type_input": "upload",
                                 "dataurl": result
                             }))
                         });
@@ -375,6 +436,42 @@
             $(this).val("");
         })
     </script>
+
+
+    {% if User != None %}
+    <script>
+        function savemodel() {
+            $.ajax({
+                url: "/savingmodel",
+                data: {
+                    "UserID": "{{ User.id }}",
+                    "MachineID": "{{ Machine.id }}",
+                    "Name": $("#machine-name").val()
+                },
+                method: "POST",
+                beforeSend: function (xhr,
+                    settings) {
+                    blockUI();
+                    if (!csrfSafeMethod(settings.type) && !this
+                        .crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            }).done(function (data) {
+                if (data.status == 200) {
+                    $.unblockUI()
+                    Swal.fire("success", data.msg, "success")
+                } else {
+                    Swal.fire("warning", data.msg, "warning")
+                    $.unblockUI()
+                }
+            }).fail(function (data) {
+                Swal.fire("error", "Server Error", "error")
+                $.unblockUI()
+            })
+        }
+    </script>
+    {% endif %}
 
 
 </body>

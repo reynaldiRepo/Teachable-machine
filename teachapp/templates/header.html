@@ -4,8 +4,10 @@
         <div class="nk-header-wrap">
             <div class="nk-header-brand">
                 <a href="" class="logo-link">
-                    <img class="logo-light logo-img" src="{% static 'images/logo-new.png' %}" srcset="{% static 'images/logo-new.png' %}" alt="logo">
-                    <img class="logo-dark logo-img" src="{% static 'images/logo-new.png' %}" srcset="{% static 'images/logo-new.png' %}" alt="logo-dark">
+                    <img class="logo-light logo-img" src="{% static 'images/logo-new.png' %}"
+                        srcset="{% static 'images/logo-new.png' %}" alt="logo">
+                    <img class="logo-dark logo-img" src="{% static 'images/logo-new.png' %}"
+                        srcset="{% static 'images/logo-new.png' %}" alt="logo-dark">
                 </a>
             </div><!-- .nk-header-brand -->
             <div class="nk-header-menu">
@@ -16,12 +18,7 @@
                         </a>
                     </li><!-- .nk-menu-item -->
                     <li class="nk-menu-item">
-                        <a href="" class="nk-menu-link">
-                            <span class="nk-menu-text">Create Your Model</span>
-                        </a>
-                    </li><!-- .nk-menu-item -->
-                    <li class="nk-menu-item">
-                        <a href="" class="nk-menu-link">
+                        <a href="/about-us" class="nk-menu-link">
                             <span class="nk-menu-text">About Us</span>
                         </a>
                     </li><!-- .nk-menu-item -->
@@ -40,35 +37,35 @@
                         <div class="dropdown-menu dropdown-menu-md dropdown-menu-right dropdown-menu-s1">
                             <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                                 <div class="user-card">
+                                    {% if User == Npne %}
                                     <div class="user-avatar">
-                                        <span>AB</span>
+                                        <span>A</span>
                                     </div>
                                     <div class="user-info">
-                                        <span class="lead-text">Abu Bin Ishtiyak</span>
-                                        <span class="sub-text">info@softnio.com</span>
+                                        <span class="lead-text">Anonymous</span>
                                     </div>
                                     <div class="user-action">
-                                        <a class="btn btn-icon mr-n2" href="html/user-profile-setting.html"><em class="icon ni ni-setting"></em></a>
+                                        <a class="btn btn-icon mr-n2" data-toggle="modal"
+                                            data-target=".modal-login">Login</a>
                                     </div>
+                                    {% else %}
+                                    <div class="user-avatar">
+                                        <span><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <div class="user-info">
+                                        <span class="lead-text">{{ User.username }}</span>
+                                    </div>
+                                    <div class="user-action">
+                                        <a class="btn btn-icon mr-n2" href="/logout">Log out</a>
+                                    </div>
+                                    {% endif %}
                                 </div>
-                            </div>
-                            <div class="dropdown-inner">
-                                <ul class="link-list">
-                                    <li><a href="html/user-profile-regular.html"><em class="icon ni ni-user-alt"></em><span>View Profile</span></a></li>
-                                    <li><a href="html/user-profile-setting.html"><em class="icon ni ni-setting-alt"></em><span>Account Setting</span></a></li>
-                                    <li><a href="html/user-profile-activity.html"><em class="icon ni ni-activity-alt"></em><span>Login Activity</span></a></li>
-                                    <li><a class="dark-switch" href="#"><em class="icon ni ni-moon"></em><span>Dark Mode</span></a></li>
-                                </ul>
-                            </div>
-                            <div class="dropdown-inner">
-                                <ul class="link-list">
-                                    <li><a href="#"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
-                                </ul>
                             </div>
                         </div>
                     </li><!-- .dropdown -->
                     <li class="d-lg-none">
-                        <a href="#" class="toggle nk-quick-nav-icon mr-n1" data-target="sideNav"><em class="icon ni ni-menu"></em></a>
+                        <a href="#" class="toggle nk-quick-nav-icon mr-n1" data-target="sideNav"><em
+                                class="icon ni ni-menu"></em></a>
                     </li>
                 </ul><!-- .nk-quick-nav -->
             </div><!-- .nk-header-tools -->

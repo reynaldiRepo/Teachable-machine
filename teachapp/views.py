@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from teachapp.models import Machine
 from teachapp.models import MachineClass
 from django.http import JsonResponse
@@ -26,14 +26,28 @@ from teachapp.consumer import doSendLogTraining
 #for unique string web socket
 import uuid 
 
+#for download model
 from django.views.static import serve
+
+#for user django
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+
 
 # Views Apps / controller
 def mainapp(request):
+
+    # check member login
+    user = None
+    if request.session.get('user_login'):
+        user = User.objects.get(id=request.session.get('user_login'))
+    
+
     context = {
         'Title' : "Teaching Machine",
         'SubTitle' : "Define your class, add dataset, make machine learn your data",
-        'RoomCode' : uuid.uuid4().hex[:6].upper()
+        'RoomCode' : uuid.uuid4().hex[:6].upper(),
+        "User" : user
     }
 
     tomorrow = datetime.now() + timedelta(days = 1)
@@ -43,13 +57,13 @@ def mainapp(request):
     response = render (request, 'index.html', context)
     response.set_cookie("RoomCode", "teachapp_"+context['RoomCode'], expires=expires)
 
-    for m in Machine.objects.all():
-        shutil.rmtree(m.Directory)
-        print(m.id)
-        m.delete()
-    for mc in MachineClass.objects.all():
-        print(mc.id)
-        mc.delete()
+    # for m in Machine.objects.all():
+    #     shutil.rmtree(m.Directory)
+    #     print(m.id)
+    #     m.delete()
+    # for mc in MachineClass.objects.all():
+    #     print(mc.id)
+    #     mc.delete()
 
     return response
 
@@ -122,6 +136,13 @@ def testing(request, machineid):
     if Machine.objects.filter(id=machineid).count() == 0:
         raise Http404;
     
+    # check member login
+    user = None
+    if request.session.get('user_login'):
+        user = User.objects.get(id=request.session.get('user_login'))
+    
+        
+
 
     machine = Machine.objects.get(id=machineid)
     
@@ -131,7 +152,8 @@ def testing(request, machineid):
         'Title' : "Your machine are ready",
         'SubTitle' : "Start testing, Our Machine Has been learn your data",
         'Machine' : machine,
-        'RoomCode' : randomid
+        'RoomCode' : randomid,
+        'User' : user
     }
 
     response = render (request, 'testing.html', context)
@@ -156,4 +178,114 @@ def downloadModel(request, machineid):
             return response
     raise Http404
 
+
+def login(request):
+    post = request.POST
+
+    #validate request
+    if post == None:
+        return JsonResponse({"status":400, "msg":"Forbidden"}, safe=False)
+
+    Username = request.POST.get("Username")
+    Password = request.POST.get("Password")
+
+    print(Username, Password)
+    user = authenticate(username=Username, password=Password)
+    if user == None:
+        return JsonResponse({"status":500, "msg":"Login Failed"}, safe=False)
+    
+
+    request.session['user_login'] = user.id
+    return JsonResponse({"status":200, "msg":"Login Success"}, safe=False)
+
+def register(request):
+    post = request.POST
+
+    #validate request
+    if post == None:
+        return JsonResponse({"status":404, "msg":"Forbidden"}, safe=False)
+
+    Username = request.POST.get("Username")
+    Password = request.POST.get("Password")
+    Email = request.POST.get("Email")
+
+    if " " in Username:
+        return JsonResponse({"status":500, "msg":"Username cant recieve blank space"}, safe=False)
+
+    if User.objects.filter(username=Username).count() != 0 or User.objects.filter(email=Email).count() != 0 :
+        return JsonResponse({"status":417, "msg":"Username / Email has been used"}, safe=False)
+
+    user = User.objects.create_user(Username, Email, Password)
+    request.session['user_login'] = user.id
+    return JsonResponse({"status":200, "msg":"Register Success"}, safe=False)
+
+def logout(request):
+    if request.session.get('user_login'):
+        del request.session['user_login']
+    return redirect("mainapp")
+
+def savingmodel(request):
+    post = request.POST
+
+    #validate request
+    if post == None:
+        return JsonResponse({"status":404, "msg":"Forbidden"}, safe=False)
+
+    MachineID = request.POST.get("MachineID")
+    UserID = request.POST.get("UserID")
+    Name = request.POST.get("Name")
+
+    #saving machine to spesific user
+    machine = Machine.objects.get(id=MachineID)
+    machine.Name = Name 
+    machine.User = str(UserID)
+    machine.save()
+
+    return JsonResponse({"status":200, "msg":"Saving Machine Success"}, safe=False)
+
+
+def usermodels(request): 
+    # initate user
+    user = None
+    if not request.session.get('user_login'):
+        return redirect("mainapp")
+    else:
+         user = User.objects.get(id=request.session.get('user_login'))
+
+
+    Machines = Machine.objects.filter(User = str(user.id))
+
+    context = {
+        "Machines" : Machines,
+        "User" : user
+    }
+
+    return render(request ,"usermodel.html", context)
+
+
+
+
+#additional
+def about(request):
+    user = None
+    if request.session.get('user_login'):
+        user = User.objects.get(id=request.session.get('user_login'))    
+
+    context = {
+        "User" : user
+    }
+
+    return render(request ,"about.html", context)
+
+#additional
+def ourmachine(request):
+    user = None
+    if request.session.get('user_login'):
+        user = User.objects.get(id=request.session.get('user_login'))    
+
+    context = {
+        "User" : user
+    }
+
+    return render(request ,"ourmachine.html", context)
 

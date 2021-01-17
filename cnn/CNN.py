@@ -151,6 +151,7 @@ class ModelLoader():
         # print(dataTest)
 
         prediction = self.model.predict(dataTest)
+        print(prediction)
         label = self.objectMachine.getArrayLabelClass()
         result = {}
         for i in range (len(prediction[0])):
