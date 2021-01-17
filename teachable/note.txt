@@ -1,11 +1,11 @@
 # cleaning database
 # for m in Machine.objects.all():
-# shutil.rmtree(m.Directory)
-# print(m.id)
-# m.delete()
+#   shutil.rmtree(m.Directory)
+#   print(m.id)
+#   m.delete()
 # for mc in MachineClass.objects.all():
-# print(mc.id)
-# mc.delete()
+#   print(mc.id)
+#   mc.delete()
 
 # try learning
 # machine = Machine.objects.get(id = 15)
