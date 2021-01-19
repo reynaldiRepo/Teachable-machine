@@ -1,0 +1,77 @@
+Step 1 : 
+setup virtualenv
+
+step 2 :
+install dependcie/ library
+- django #web framework
+- djongo #untuk database mongodb
+- keras
+- numpy
+- channels #untuk web socket
+- cahnnels-redis #ini untuk koneksi ke port redis
+
+#gak wajib
+step 3 :
+start project django : 
+create project
+- django-admin startproject teachable
+create app
+- masuk kedalam folder teachable
+- python manage.py startapp teachapp
+
+#gak wajib
+step 4 :
+setting django : 
+file setting.py : apps, templates, Database, static_url, DATA_UPLOAD_MAX_MEMORY_SIZE
+
+#gak wajib
+step 5 :
+#create models
+- masuk ke folder teachable / teachapp / models.py
+- migration : 
+commands : /teachable
+ - python manage.py makemigrations
+ - python manage.py migrate
+
+
+
+#workflow training
+- Server running
+- Browser capture image - webcam
+fungsi yang handle image webcam pada index.html
+- turnonwebcam
+- turnoffwebcam
+- snap
+#conversi image menjadi dataurl ada pada fungsi snap
+#semua image dataurl dirubah menjadi json array pada fungsi 
+# $("#dotraining-form").submit
+
+setelah dilakukan submit image beserta settingnya (epoch, batch, dll)
+# image disimpan pada server menggunakan konversi dataurl menjadi image dengan bantuan urlib
+proces diatas berada pada fungsi starttrain yang ada pada file /teachapp/views.py
+
+#semua data setup training disimpan pada database yang sesuai dengan models Machine (model database)
+
+#dilakukan proses training dengan menginisiasi class CNN dengan parameter w, h image ditambah dengan object machine yang berasal dari
+penyimpanan image dan setup database tadi
+
+#pada saat fitting model diattach keras callback sebagai alat bantu pemberian log pesan sampai manakan training dilakukan
+
+#saat training selesai semua model akan disimpan menjadi model satitc atau file dengan extension h5. (file cnn.py fungsi saving model)
+
+#proses selesai dan page diredirect menuju halaman testing sesuai dengan model yang dibuat sebelumnya
+
+
+#pada proses testing dilakukan hal yang sama dalam capture image seperti training. perbedaannya ada pada pengiriman data yang ada pada fungsi 
+ $(".start-test-btn").click pada file testing.html
+yangmana image hasil convert menjadi dataurl dikirim kepada server melalui web socket
+
+sever akan melakukan predict dan dikembalikan juga pada client browser melalui web socket yang mana semua dihandle pada file consumer.py bila pada server dan pada testing.html dihandle pada fungsi  socket.onmessage
+
+#tugas done
+
+
+
+
+
+
