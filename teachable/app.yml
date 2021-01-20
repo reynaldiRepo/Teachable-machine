@@ -1,0 +1,15 @@
+runtime: python37
+entrypoint: gunicorn -b :$PORT teachable.wsgi
+instance_class: F4
+
+# Update with Redis instance details
+env_variables:
+  REDISHOST: '10.225.114.179'
+  REDISPORT: '6379'
+
+# Update with Serverless VPC Access connector details
+vpc_access_connector:
+  name: 'projects/machinelaerner/locations/asia-east2/connectors/connector'
+
+network:
+  name: default
