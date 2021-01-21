@@ -225,12 +225,14 @@
     <script>
         // socket function
         var socket = new WebSocket(
-            'wss://' +
+            'ws://' +
             window.location.host +
             '/ws/teaching/' +
             '{{ RoomCode }}' +
             '/'
         )
+
+
 
         socket.onmessage = function (e) {
             console.log(e);
@@ -274,6 +276,7 @@
             Swal.fire("warning", "WebSocket is close, we will refresh your page", "warning")
             location.reload()
         }
+        
     </script>
 
     <script>

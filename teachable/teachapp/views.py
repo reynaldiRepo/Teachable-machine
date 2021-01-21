@@ -57,14 +57,6 @@ def mainapp(request):
     response = render (request, 'index.html', context)
     response.set_cookie("RoomCode", "teachapp_"+context['RoomCode'], expires=expires)
 
-    for m in Machine.objects.all():
-        shutil.rmtree(m.Directory)
-        print(m.id)
-        m.delete()
-    for mc in MachineClass.objects.all():
-        print(mc.id)
-        mc.delete()
-
     return response
 
 
@@ -141,11 +133,7 @@ def testing(request, machineid):
     if request.session.get('user_login'):
         user = User.objects.get(id=request.session.get('user_login'))
     
-        
-
-
     machine = Machine.objects.get(id=machineid)
-    
     randomid = str("testing_")+uuid.uuid4().hex[:6].upper()+"_"+str(machineid)
 
     context = {

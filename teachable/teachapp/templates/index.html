@@ -124,6 +124,7 @@
                                                                 <hr>
                                                                 <form action="starttrain" method="post"
                                                                     id="dotraining-form">
+                                                                    {% csrf_token %}
                                                                     <div class="form-group">
                                                                         <label>Epoch</label>
                                                                         <input type="number" name="epoch" value=50

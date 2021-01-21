@@ -81,16 +81,11 @@ WSGI_APPLICATION = 'teachable.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-       'ENGINE' : 'djongo',
-       'NAME' : 'teachable_ml', #as named on server,
-       'CLIENT': {
-            'host' : 'mongodb+srv://reynaldi:aldi040898@cluster0.3ofjd.mongodb.net/teachable_ml',
-            'username' : 'reynaldi',
-            'password' : 'aldi040898',
-            'port': 27017,
-        } 
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
